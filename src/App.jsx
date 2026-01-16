@@ -1,33 +1,31 @@
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Body from './components/Body';
-import Login from './components/Login';
-import Profile from './components/Profile';
-import { Provider } from 'react-redux';
-import appStore from './utils/appStore';
-import Feed from './components/Feed';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { Toaster } from "react-hot-toast";
+
+import appStore from "./utils/appStore";
+import Body from "./components/Body";
+import Feed from "./components/Feed";
+import Login from "./components/Login";
+import Profile from "./components/Profile";
+
 function App() {
   return (
-    <>
-      <Provider store={appStore}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Body />}>
-              <Route path="/" element={<Feed />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </Provider>
-      {/* <Navbar/>
+    <Provider store={appStore}>
+      <BrowserRouter>
 
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <h1 className="text-4xl font-bold text-pink-500">
-        Hello World 👋
-      </h1>
-    </div> */}
-    </>
+        {/* 🔥 Toast container */}
+        <Toaster position="top-right" reverseOrder={false} />
+
+        <Routes>
+          <Route path="/" element={<Body />}>
+            <Route index element={<Feed />} />     {/* ✅ FIXED */}
+            <Route path="login" element={<Login />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+        </Routes>
+
+      </BrowserRouter>
+    </Provider>
   );
 }
 

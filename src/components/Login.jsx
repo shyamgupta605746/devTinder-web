@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [emailId, setEmailID] = useState("shalini@gmail.com");
@@ -11,21 +12,26 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const handleLogin = async () => {
-    try {
-      const res = await axios.post(
-        BASE_URL + "/login", {
-        emailId,
-        password,
-      },
-        { withCredentials: true }
-      );
-      dispatch(addUser(res.data));
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-    }
-  };
+ const handleLogin = async () => {
+  try {
+    const res = await axios.post(
+      BASE_URL + "/login",
+      { emailId, password },
+      { withCredentials: true }
+    );
+
+    dispatch(addUser(res.data));
+    toast.success("Login successful 🎉"); // ✅ success toast
+    navigate("/");
+  } catch (err) {
+    const errorMsg =
+      err?.response?.data?.message ||
+      "Invalid email or password ❌";
+
+    toast.error(errorMsg); // ❌ error toast
+  }
+};
+
   return (
     <div className="flex justify-center my-10">
       <div className="card card-dash bg-base-300 w-96">
