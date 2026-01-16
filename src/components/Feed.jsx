@@ -1,9 +1,41 @@
-import React from 'react'
+import axios from "axios";
+import { useEffect } from "react";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { addFeed } from "../utils/feedSlice";
+import toast from "react-hot-toast";
+import UserCard from "./UserCard";
 
 const Feed = () => {
-  return (
-    <div>Feed</div>
-  )
-}
+  const feed = useSelector((store) => store.feed);
+  const dispatch = useDispatch();
 
-export default Feed
+  const getFeed = async () => {
+    try {
+      if (feed) return;
+
+      const res = await axios.get(BASE_URL + "/feed", {
+        withCredentials: true, 
+      });
+
+      dispatch(addFeed(res.data));
+      toast.success("Feed loaded 🚀");
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || "Failed to load feed ❌"
+      );
+    }
+  };
+
+  useEffect(() => {
+    getFeed();
+  }, []);
+
+  return (
+   feed && ( <div className="flex justify-center my-10">
+      <UserCard user={feed[0]}/>
+    </div>)
+  );
+};
+
+export default Feed;
