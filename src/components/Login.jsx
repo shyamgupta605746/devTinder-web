@@ -60,7 +60,7 @@ const Login = () => {
 
           {/* Button */}
           <div className="card-actions justify-center mt-6">
-            <button className="btn btn-primary w-full" onClick={handleLogin}>
+            <button className="btn btn-primary w-full bg-indigo-400" onClick={handleLogin}>
               Login
             </button>
           </div>
