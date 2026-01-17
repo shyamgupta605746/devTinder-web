@@ -5,20 +5,19 @@ const UserCard = ({ user }) => {
 
     return (
         <div className="card bg-base-300 w-96 shadow-sm">
-            <figure>
-                <img
-                    src={photoUrl}
-                    alt={`${firstName}`}
-                    className="w-full h-64 object-cover"
-                />
-            </figure>
-
+             <figure className="relative w-full h-64 overflow-hidden rounded-t-xl">
+        <img
+          src={photoUrl}
+          alt={firstName}
+          className="w-full h-full object-cover object-top"
+        />
+      </figure>
             <div className="card-body">
                 <h2 className="card-title">
                     {firstName} {lastName}
                 </h2>
 
-                <p>{age ?? "N/A"}, {gender ?? "Male"}</p>
+                {age && gender && <p>{age ?? "N/A"}, {gender ?? "N/A"}</p>}
 
                 <p>{about}</p>
 
