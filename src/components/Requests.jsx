@@ -3,10 +3,31 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addRequests } from "../utils/requestSlice";
 import { useEffect } from "react";
+ import { removeRequest } from "../utils/requestSlice";
+import toast from "react-hot-toast";
 
 const Requests = () => {
   const request = useSelector((store) => store.requests);
   const dispatch = useDispatch();
+
+
+const reviewRequest = async (status, requestId) => {
+  try {
+    await axios.post(
+      BASE_URL + "/request/review/" + status + "/" + requestId,
+      {},
+      { withCredentials: true }
+    );
+    dispatch(removeRequest(requestId));
+    toast.success(`Request ${status}`);
+  } catch (err) {
+    toast.error(
+      err?.response?.data?.message || "Action failed ❌"
+    );
+  }
+};
+
+
   const fetchRequest = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/requests/received", { withCredentials: true });
@@ -56,8 +77,8 @@ const Requests = () => {
               )}
             </div>
             <div>
-              <button className="btn btn-danger bg-indigo-400 p-5 m-4">Reject</button>
-              <button className="btn btn-secondary bg-pink-400 p-5">Accept</button>
+              <button className="btn btn-danger bg-indigo-400 p-5 m-4" onClick={()=>reviewRequest("rejected", request._id)}>Reject</button>
+              <button className="btn btn-secondary bg-pink-400 p-5" onClick={()=>reviewRequest("accepted", request._id)}>Accept</button>
             </div>
           </div>
         );
