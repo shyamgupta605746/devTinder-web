@@ -32,7 +32,7 @@ const UserCard = ({ user, onNext }) => {
         <img
           src={photoUrl}
           alt={firstName}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-fit"
         />
       </figure>
 
